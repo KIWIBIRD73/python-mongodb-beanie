@@ -1,7 +1,7 @@
 from typing import List, Literal
 from datetime import datetime
 from beanie import Document
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 # Подмодели
 class Entity(BaseModel):
