@@ -68,7 +68,7 @@
 JSON:
 ```json
 {
-  "_id": "ObjectId("650f6c3b0e2f4b1fabc12345")",
+  "_id": "ObjectId(\"650f6c3b0e2f4b1fabc12345\")",
   "raw_text": "Владимир Путин посетил Москву в январе 2023 года.",
   "language": "ru",
   "preprocessing": {
