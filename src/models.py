@@ -31,3 +31,30 @@ class NLPResult(Document):
 
     class Settings:
         name = "nlp_results"   # имя коллекции
+
+
+"""
+В итоге описана структура для следующего документа:
+{
+  "_id": ObjectId("...") // генерируется автоматически
+  "raw_text": String
+  "language": String // в БД строка, но в коде еще жестче фиксируем типизацию с помощью указания типа Literal['en', 'ru']
+  "preprocessing": {
+    "tokens_by_word": Array // массив из строк
+    "tokens_by_symbol": Array // массив из строк
+    "lowercased": String
+    "no_punct": String
+    "alnum_keep": String
+  },
+  "lemmas": Array, // массив из строк
+  "entities": [
+    {"text": String, "label": String}
+  ],
+  "pos_tags": [
+    {"text": String, "label": String}
+  ],
+  "created_at": DateTime
+}
+
+Таким образом в коде фиксируем структуру моделей и документов для MongoDb
+"""

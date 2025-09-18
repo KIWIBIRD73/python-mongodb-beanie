@@ -34,16 +34,18 @@ def get_language() -> Literal['ru', 'en']:
     """
     lang = input("Введите язык текста ('ru' или 'en'): ").strip().lower()
 
+    # убеждаемся, что передана одно из указанных локалей
     available_locales = ('ru', 'en')
     while lang not in available_locales:
         lang = input("Введите один из предложенных языков ('ru' или 'en'): ").strip().lower()
 
-    if lang not in ('ru', 'en'):
-        raise ValueError("Поддерживаются только 'ru' или 'en'")
     return lang
 
 
 async def analyze_and_save():
+    """
+    Запуск NLP анализа на основе переданного текста из `get_input_sentence` и локали из `get_language`
+    """
     sentence = get_input_sentence()
     language = get_language()
 
@@ -71,7 +73,7 @@ async def analyze_and_save():
     entities_list = [Entity(text=text, label=label) for text, label in extract_entities(sentence, language)]
     pos_tags_list = [PosTag(text=text, pos=pos) for text, pos in extract_pos(sentence, language)]
 
-    # Сохранение итоговой записи в mongoDB в в коллекцию nlp_result
+    # Создание итогового документа в mongoDB в в коллекцию nlp_result
     doc = NLPResult(
         raw_text=sentence,
         language=language,
@@ -83,17 +85,24 @@ async def analyze_and_save():
     )
 
     print('⏳ Сохранение записи в базу данных...')
+    # обязательно нужно сохранить созданный документ
     await doc.insert()
     print("✅ NLP анализ сохранён в базу данных!")
     print(f"💾 ID сохраненного документа: {doc.id}")
 
 
 async def main():
+    """
+    Основная функция, которая запускает проект
+    """
     await init_db()
     await analyze_and_save()
 
+# Точка входа в приложение
+# Для запуска через Poetry
 def run():
     asyncio.run(main())
 
+# Для запуска через Python
 if __name__ == "__main__":
     run()

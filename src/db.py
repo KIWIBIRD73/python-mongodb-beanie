@@ -1,5 +1,4 @@
 import os
-from pymongo import MongoClient
 from pymongo import AsyncMongoClient
 from beanie import init_beanie
 from src.models import NLPResult
@@ -36,8 +35,14 @@ async def init_db():
     """
     client_username, client_password, mongodb_port, mongodb_name= get_env_config()
 
+    # создание ссылки подключения к БД на основе .env конфигурации. Ссылка имеет следующий формат: mongodb://имя-пользователя:пароль-пользователя@хост:порт
     db_connection_link = f'mongodb://{client_username}:{client_password}@localhost:{mongodb_port}/'
+    # инициализация клиента для взаимодействия с mongodb
     client = AsyncMongoClient(db_connection_link)
-    await init_beanie(database=client[mongodb_name], document_models=[NLPResult])
+    # инициализация Beanie ORM (Object-Relational Mapping), чтобы можно было создавать модели и документы
+    await init_beanie(
+        database=client[mongodb_name], # указываем название базы для данных, берем из .env MONGO_DB_NAME
+        document_models=[NLPResult] # здесь нужно передать все модели, которые могут быть в базе данных
+    )
 
     print(f"✅ Успешное подключение к базе данных! MongoDB доступна по ссылке: {db_connection_link}")
