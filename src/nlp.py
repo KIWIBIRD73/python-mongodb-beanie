@@ -19,6 +19,7 @@ def ensure_spacy_model(model_name: str):
         )
         print(f"Модель {model_name} установлена.")
 
+
 def load_nlp(language: Literal['ru', 'en']) -> Language:
     """
     Возвращает объект nlp для указанного языка с автоматической установкой модели.
